@@ -18,8 +18,13 @@ def print_all_sites():
 
 def print_site(site_id):
   camp_api = CampsiteAPI()
-  response_dict = camp_api.get_site(site_id)
-  pprint.pprint(response_dict)
+  campsites = camp_api.get_all_sites()
+  print ''
+  print ''
+  print ''
+  print 'campsite locations: '
+  for site in campsites:
+    print site.get_location()
 
 
 def main():

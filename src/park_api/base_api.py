@@ -29,11 +29,9 @@ class BaseAPI:
 
   @classmethod
   def _get_auth_url(cls, path, *args):
-    print 'args: ' + str(args)
     final_path = path
     if len(args) > 0:
       final_path = path.format(*args)
-    print 'final_path: ' + final_path
 
     path_base = '{0}{1}?apikey={2}'.format(
         cls._get_base_url(), final_path, cls._get_api_key_str())
@@ -41,10 +39,16 @@ class BaseAPI:
 
   @classmethod
   def _send_get_request(cls, full_url):
+    # TODO: implement cache layer here
+
     # todo: try catch
     response = requests.get(full_url)
 
-    # todo: try catch
-    resp_dict = json.loads(response.text)
+    try:
+      resp_dict = json.loads(response.text)
+    except ValueError as e:
+      # todo: log
+      print 'unable to decode response json: {0}'.format(e)
+      return None
 
     return resp_dict
